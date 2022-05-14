@@ -3,7 +3,7 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "api-interfaces": "libs/api-interfaces",
+    "interfaces": "libs/interfaces",
     "models": "libs/models",
     "teststore": "apps/teststore",
     "teststore-e2e": "apps/teststore-e2e"

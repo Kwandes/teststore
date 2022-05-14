@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Message } from '@teststore/api-interfaces';
+import { Component } from '@angular/core';
+import { IMessage } from '@interfaces';
 
 @Component({
   selector: 'teststore-root',
@@ -8,6 +8,6 @@ import { Message } from '@teststore/api-interfaces';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  hello$ = this.http.get<Message>('/api/hello');
+  hello$ = this.http.get<IMessage>('/api/hello');
   constructor(private http: HttpClient) {}
 }
