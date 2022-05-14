@@ -5,6 +5,7 @@
     "api": "apps/api",
     "interfaces": "libs/interfaces",
     "models": "libs/models",
+    "seeder": "apps/seeder",
     "teststore": "apps/teststore",
     "teststore-e2e": "apps/teststore-e2e"
   }
