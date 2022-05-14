@@ -1,98 +1,110 @@
 # Teststore
 
-This project was generated using [Nx](https://nx.dev).
+## About The Project
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+Do you find yourself on how to test different parts of your Angular or NestJs application?\
+Is your teacher asking for you to come up with various test cases?
+**Look no further, this app has a examples of all that**
 
-🔎 **Smart, Fast and Extensible Build System**
+Unit tests in NestJs, E2E endpoints tests for the API, Frontend E2E tests with Cypress, and a mix of integration tests in the backend and frontend validating the components and services. Many test cases, many tests, all your heart desires.
 
-## Quick Start & Documentation
+### Built With
 
-[Nx Documentation](https://nx.dev/angular)
+- [NestJs](https://nestjs.com/) - api
+- [Angular](https://angular.io/) - frontend
+- [NX](https://nx.dev/) - repository structure as a monorepo
+- [PostgreSql](https://www.postgresql.org/) - data persistance
+- And love 💖
 
-[10-minute video showing all Nx features](https://nx.dev/getting-started/intro)
+#### Configuration
 
-[Interactive Tutorial](https://nx.dev/tutorial/01-create-application)
+The services are configured via a `.env` file, which is gitignored.\
+If you wish to connect to a database other than a locally hosted one, create a `.env` file based on the [.env.template](.env.template) and store your data there.
 
-## Adding capabilities to your workspace
+```sh
+cp .env.template .env
+```
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Getting Started
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+### Prerequisites
 
-Below are our core plugins:
+Before you can run this project, you need to have the following things installed:
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+- Npm and Node - we recommend using [NVM (Linux, MacOS)](https://github.com/nvm-sh/nvm#about) or [NVM-Windows (Windows)](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows)
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+  > Use Node version `v16.14.0+`
 
-## Generate an application
+- nx
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
+```sh
+npm install -g nx
+```
 
-> You can use any of the plugins above to generate applications as well.
+> if you don't want to install NX globally, every NX command will have to be run through npx
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+> We try to use the latest version of NX, but it is under active development and gets updated often. If the latest version of NX doesn't work, try an older version and submit a bug report.\
+> Current NX version used by the project can be found in the [package.json](package.json) under any of the `nrwl/` dev dependencies
 
-## Generate a library
+### Installation
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+1. Clone the repo
 
-> You can also use any of the plugins above to generate libraries as well.
+```sh
+git clone https://github.com/Kwandes/teststore.git
+```
 
-Libraries are shareable across libraries and applications. They can be imported from `@teststore/mylib`.
+2. Install NPM packages
 
-## Development server
+```sh
+npm install
+```
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+3. Configure the app
 
-## Code scaffolding
+Update the `.env` file if needed.
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+The app requires a PostgreSql database instance to connect to with an existing schema `teststore`
 
-## Build
+You can run one locally via Docker with:
 
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```docker
+docker run --name postgres --restart unless-stopped -e POSTGRES_USER=root -e POSTGRES_PASSWORD=root -e POSTGRES_DB=teststore -p 5432:5432 -d postgres
+```
 
-## Running unit tests
+4. _[Optional]_ Populate (seed) the database with example data
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+```sh
+npm run seed
+```
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+5. Serve the apps
 
-## Running end-to-end tests
+The system is composed of multiple apps, to get access to all of the functionalty all of them need to be running.
 
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+#### NX serve
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+You can either serve apps individually with:
 
-## Understand your workspace
+```sh
+nx serve api
+nx serve teststore
+```
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+or serve multiple apps using:
 
-## Further help
+```sh
+nx run-many --maxParallel 2 --parallel true --projects api, teststore --target serve
+```
 
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+Find out more about how to use NX [here](https://nx.dev/latest/angular/getting-started/nx-cli)
 
-## ☁ Nx Cloud
+#### Documentation
 
-### Distributed Computation Caching & Distributed Task Execution
+The API is documented using SwaggerUi, which you can access by runnign the api and navigating to [localhost:3333/api](http://localhost:3333/api)
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
+The documentation contains all of the available endpoints as well as how to call them and what they return.
 
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
+## License
 
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+Distributed under the MIT License. See [`LICENSE`](./LICENSE) for more information.
