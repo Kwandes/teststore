@@ -47,12 +47,6 @@ class ConfigService {
 }
 
 // commented out so the app uses defaults for DB connection instead
-const configService = new ConfigService(process.env).ensureValues([
-  //   'POSTGRES_HOST',
-  //   'POSTGRES_PORT',
-  //   'POSTGRES_USER',
-  //   'POSTGRES_PASSWORD',gi
-  //   'POSTGRES_DATABASE',
-]);
+const configService = new ConfigService(process.env).ensureValues([]);
 
 export { configService };
