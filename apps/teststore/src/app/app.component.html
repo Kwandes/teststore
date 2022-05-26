@@ -1,10 +1,21 @@
-<div style="text-align: center">
-  <h1>Welcome to teststore!</h1>
-  <img
-    width="450"
-    src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-    alt="Nx - Smart, Fast and Extensible Build System"
-  />
-</div>
-<div>Message: {{ hello$ | async | json }}</div>
+<nav>
+  <a id="logo" href="https://github.com/Kwandes/teststore">TESTSTORE</a>
+  <section id="nav-buttons">
+    <button
+      class="products-btn nav-btn"
+      [ngClass]="currentUrl === '/products' ? 'current-page' : ''"
+      routerLink="products"
+    >
+      Products
+    </button>
+    <button
+      class="checkout-btn nav-btn"
+      [ngClass]="currentUrl === '/checkout' ? 'current-page' : ''"
+      routerLink="checkout"
+    >
+      Checkout
+    </button>
+  </section>
+</nav>
+<hr />
 <router-outlet></router-outlet>

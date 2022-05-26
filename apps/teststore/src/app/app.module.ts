@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 import { ProductsComponent } from './products/products.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'products', component: ProductsComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: '**', redirectTo: 'products' }, // Any other path is redirected to the products page

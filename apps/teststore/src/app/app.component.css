@@ -1,0 +1,43 @@
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  /* background-color: #e8e8e8; */
+}
+
+/* hr {
+  margin-top: 0;
+} */
+
+#logo {
+  padding: 5px;
+  margin: 5px;
+  font-size: xx-large;
+}
+
+#nav-buttons {
+  margin: 10px;
+}
+
+.nav-btn {
+  font-size: large;
+  margin: 5px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+
+  color: white;
+  background-color: #2ca8fc;
+}
+
+.nav-btn:hover {
+  background-color: #2f4efc;
+  transition-duration: 0.3s;
+}
+
+/* Styling for the nav button that navigates the the current route */
+.current-page,
+.current-page:hover {
+  background-color: #752cfc;
+}
