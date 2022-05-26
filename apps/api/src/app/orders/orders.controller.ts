@@ -1,14 +1,11 @@
-import { CreateOrderRequest, IOrder, UpdateOrderRequest } from '@interfaces';
+import { CreateOrderRequest, IOrder } from '@interfaces';
 import {
   Body,
   Controller,
-  Delete,
   Get,
-  HttpCode,
   Param,
   ParseUUIDPipe,
   Post,
-  Put,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 
@@ -29,19 +26,5 @@ export class OrdersController {
   @Post('')
   create(@Body() createRequest: CreateOrderRequest): Promise<IOrder> {
     return this.ordersService.create(createRequest);
-  }
-
-  @Put(':id')
-  update(
-    @Param('id', ParseUUIDPipe) id: string,
-    @Body() createRequest: UpdateOrderRequest
-  ): Promise<IOrder> {
-    return this.ordersService.update(id, createRequest);
-  }
-
-  @Delete(':id')
-  @HttpCode(204)
-  delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    return this.ordersService.perish(id);
   }
 }

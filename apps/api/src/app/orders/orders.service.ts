@@ -1,13 +1,8 @@
-import {
-  ICreateOrderRequest,
-  IDiscount,
-  IOrder,
-  IUpdateOrderRequest,
-} from '@interfaces';
+import { ICreateOrderRequest, IDiscount, IOrder } from '@interfaces';
 import { Discount, Order } from '@models';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class OrdersService {
@@ -39,33 +34,6 @@ export class OrdersService {
   }
 
   /**
-   * Update a Order by their id
-   * @param id id of the entity
-   * @param request information for order creation.
-   * @returns entity or EntityNotFounderror
-   */
-  async update(id: string, request: IUpdateOrderRequest): Promise<IOrder> {
-    const { email, items, total, subtotal, deliveryType, discountId } = request;
-
-    const order = await this.ordersRepo.findOneOrFail({
-      where: { orderId: id },
-    });
-    order.email = email;
-    order.items = items;
-    order.total = total;
-    order.subtotal = subtotal;
-    order.deliveryType = deliveryType;
-    if (discountId) {
-      const discount = await this.discountsRepo.findOneOrFail({
-        where: { discountId: discountId },
-      });
-      order.discount = discount;
-    }
-
-    return this.ordersRepo.save(order);
-  }
-
-  /**
    * Create and persist a order entity.
    * @param request information for order creation.
    * @returns created order.
@@ -86,20 +54,5 @@ export class OrdersService {
       newOrder.discount = discount;
     }
     return this.ordersRepo.save(newOrder);
-  }
-
-  /**
-   * Delete a order entity by its id.
-   * @param id id of the order.
-   * @returns entity or EntityNotFound error.
-   */
-  async perish(id: string): Promise<void> {
-    const response = await this.ordersRepo.delete({
-      orderId: id,
-    });
-
-    if (response.affected === 0) {
-      throw new EntityNotFoundError(Order, id);
-    }
   }
 }

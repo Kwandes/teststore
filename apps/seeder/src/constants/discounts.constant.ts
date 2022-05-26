@@ -21,7 +21,7 @@ export const discounts: IDiscount[] = [
   },
   {
     discountId: '2df8ea99-bcf0-47ec-a6b3-388e8a9e3e74',
-    code: 'discount-10%',
+    code: 'discount-10-percent',
     amount: 1,
     type: DiscountTypeEnum.percentage,
     remainingUses: 100,
@@ -30,7 +30,7 @@ export const discounts: IDiscount[] = [
   },
   {
     discountId: 'a7f0b654-dea1-404c-a725-3e0046c459a4',
-    code: 'discount-100%',
+    code: 'discount-100-percent',
     amount: 100,
     type: DiscountTypeEnum.percentage,
     remainingUses: 100,

@@ -9,7 +9,7 @@ import { AppModule } from './app/app.module';
 import { EntityNotFoundExceptionFilter } from './app/shared/filters/entity-not-found-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   app.useGlobalFilters(new EntityNotFoundExceptionFilter());
@@ -31,6 +31,9 @@ async function bootstrap() {
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}`
+  );
+  Logger.warn(
+    `T̸̛̙̞͔̩̦̺̪͇̬̫͙͓̺͌̈́̂̓͐̇͒̽̓̓̋̕̕h̵̙̰̪̳͛̀̇͛̂̚ȅ̷͚͓͉͕͇̲̻̬̹̹̪̽̊̉͜ ̷̧̫̘̱̮͙͕̹͇̺͇́̍͊͗F̶̛̝̭͔̠̠̯͎͆̾̔̃̇i̸̧͖͈̖̫̰̲̳̮̘̻̞̦̙̇̓̀̎̓̑̏̑͐̔̒͗͜t̶̨̬̤͈͓̥̤͉̗̏͜n̸̛̥̩͖̠̖͖̺̫̓̅̅̽̂̄̐͂̎̀̕̚̕e̷̡̺̦̦̫̼̝̞͙̫͔̮̫͇̋̇́͌̑̽͐͂͂̔̕͜ṡ̴̥̟͇̞̗́̀̑s̸̰͍̱̘͋G̴̪̏̒̉͊̌̽̿r̵͇̘͉̺̜̲̲̥̦̂͆̑̉͋́̊͂̑́͝͠a̶̧̡̼̩͕̐͒͛̐̄̓̽̎͠m̴̡̨̛͕̺͓͇̰͖̠̦̬̈́̑̈́̃̈̇͑̎̂̅͘™̴̞͂̈́́̂̀̃́̏͆̌̚ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues...`
   );
 }
 
