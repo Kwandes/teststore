@@ -6,9 +6,9 @@ nav {
   /* background-color: #e8e8e8; */
 }
 
-/* hr {
-  margin-top: 0;
-} */
+hr {
+  width: 99%;
+}
 
 #logo {
   padding: 5px;

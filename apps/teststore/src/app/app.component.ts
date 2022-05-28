@@ -18,7 +18,6 @@ export class AppComponent implements OnInit {
     // listen to the changes to the url and update navigation accordingly
     this.router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        console.log(e.url);
         this.currentUrl = e.url;
       }
     });
