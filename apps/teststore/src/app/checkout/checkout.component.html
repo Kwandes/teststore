@@ -1,1 +1,110 @@
-<p>checkout works!</p>
+<div id="wrapper">
+  <h1>Checkout</h1>
+
+  <form name="orderForm" [formGroup]="orderForm">
+    <div id="content">
+      <section id="order-inputs">
+        <label for="email-input">Your email</label>
+        <input
+          type="email"
+          name="email-input"
+          id="email-input"
+          maxlength="254"
+          required
+          [ngClass]="
+            this.orderForm.get('email')?.dirty &&
+            !this.orderForm.get('email')?.valid
+              ? 'invalid-input'
+              : ''
+          "
+          formControlName="email"
+          placeholder="example@email.com"
+          data-cy="checkout-email-input"
+        />
+        <br />
+        <label for="checkout-delivery-method-select">Delivery method</label>
+        <select
+          name="delivery-method-select"
+          id="delivery-method-select"
+          data-cy="checkout-delivery-method-select"
+        >
+          <option value="home_delivery">Home Delivery</option>
+          <option value="pickup_point">Pickup Point</option>
+          <option value="self_pickup">Self-Pickup</option>
+        </select>
+      </section>
+      <section id="order-info">
+        <h3>Your Order:</h3>
+        <div
+          class="product-item-wrapper"
+          *ngFor="let product of productsList"
+          data-cy="checkout-product-item"
+        >
+          <div class="product-item">
+            <span class="product-item-title">{{ product.title }}</span>
+            <span class="product-item-price">{{ product.price }} DKK</span>
+          </div>
+          <button
+            class="product-item-remove-btn"
+            (click)="removeFromBasket(product)"
+            data-cy="checkout-product-item-remove-btn"
+          >
+            X
+          </button>
+        </div>
+        <hr />
+        <label for="discount-input">Discount</label>
+        <input
+          type="text"
+          name="discount-input"
+          id="discount-input"
+          [ngClass]="
+            this.orderForm.get('discount')?.dirty &&
+            !this.orderForm.get('discount')?.valid
+              ? 'invalid-input'
+              : ''
+          "
+          formControlName="discount"
+          placeholder="ExampleDiscount"
+          data-cy="checkout-discount-input"
+        />
+        <button
+          id="apply-discount-btn"
+          (click)="applyDiscount()"
+          data-cy="checkout-discount-apply-btn"
+        >
+          Apply
+        </button>
+        <section id="order-price-info">
+          <span
+            id="order-price-subtotal"
+            data-cy="checkout-order-price-subtotal"
+          >
+            Subtotal: {{ getSubtotal() }} DKK</span
+          ><br />
+          <span
+            id="order-price-you-save"
+            data-cy="checkout-order-price-you-save"
+            >You save: {{ getDiscountAmount() }} DKK</span
+          ><br />
+          <span
+            id="order-price-delivery-price"
+            data-cy="checkout-order-price-delivery-price"
+            >Deliery price: {{ getDeliveryPrice() }} DKK</span
+          ><br />
+          <span id="order-price-total" data-cy="checkout-order-price-total"
+            >Total: {{ getTotal() }} DKK</span
+          >
+        </section>
+        <button
+          id="purchase-btn"
+          (click)="purchaseOrder()"
+          [disabled]="!purchaseIsEnabled()"
+          data-cy="checkout-purchase-btn"
+        >
+          PURCHASE
+        </button>
+      </section>
+    </div>
+  </form>
+</div>

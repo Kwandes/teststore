@@ -24,8 +24,8 @@ export class ProductsComponent implements OnInit {
   }
 
   /**
-   * Add the product to the basket information stored in the session storage under key 'basket'
-   * @param product product objetc to be added
+   * Add the product to the basket information stored in the session storage under key 'basket'.
+   * @param product product objetc to be added.
    */
   addToBasket(product: IProduct): void {
     const sessionStorageItems = sessionStorage.getItem('basket');

@@ -3,13 +3,13 @@
   <div id="content">
     <div
       class="product-item"
-      data-cy="product-item"
+      data-cy="products-product-item"
       *ngFor="let product of productsList"
     >
       <div class="product-wrapper">
         <div class="product-info-wrapper">
-          <span data-cy="product-item-title">{{ product.title }}</span>
-          <span data-cy="product-item-price"
+          <span data-cy="products-product-item-title">{{ product.title }}</span>
+          <span data-cy="products-product-item-price"
             >Price: {{ product.price }} DKK</span
           >
         </div>
@@ -18,22 +18,24 @@
           class="product-image"
           [src]="product.image"
           alt="Product picture"
-          data-cy="product-item-image"
+          data-cy="products-product-item-image"
         />
       </div>
       <hr style="width: 90%" />
-      <span class="product-description" data-cy="product-item-description">{{
-        product.description
-      }}</span>
+      <span
+        class="product-description"
+        data-cy="products-product-item-description"
+        >{{ product.description }}</span
+      >
       <button
         class="add-to-basket-btn"
         (click)="addToBasket(product)"
-        data-cy="product-item-add-to-basket-btn"
+        data-cy="products-product-item-add-to-basket-btn"
       >
         <img
           src="/assets/icons/cart-plus-solid.svg"
           class="add-to-basket-btn-icon"
-          data-cy="product-item-add-to-basket-icon"
+          data-cy="products-product-item-add-to-basket-icon"
         />
         <span>Add to basket</span>
       </button>
