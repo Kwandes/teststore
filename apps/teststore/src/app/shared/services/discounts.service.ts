@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IProduct } from '@interfaces';
+import { IDiscount } from '@interfaces';
 import { Observable } from 'rxjs';
 import { environment as env } from '../../../environments/environment';
 
@@ -12,28 +12,31 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root',
 })
-export class ProductsService {
-  // TODO - write tests for ProductsService
+export class DiscountsService {
+  // TODO - write tests for DiscountsService
   constructor(private http: HttpClient) {}
 
   /**
-   * Fetch all products.
+   * Fetch all discounts.
    * @returns observable of the API request.
    * @example getAll().subscribe({next: () => {}, error: () => {}})
    */
-  getAll(): Observable<IProduct[]> {
-    return this.http.get<IProduct[]>(`${env.apiUrl}/api/products`, httpOptions);
+  getAll(): Observable<IDiscount[]> {
+    return this.http.get<IDiscount[]>(
+      `${env.apiUrl}/api/discounts`,
+      httpOptions
+    );
   }
 
   /**
-   * Fetch a single product by id.
-   * @param id the id of the product.
+   * Fetch a single discount by its code;
+   * @param code the code of the discount.
    * @returns observable of the API request.
    * @example getOne(1).subscribe({next: () => {}, error: () => {}})
    */
-  getOne(id: number): Observable<IProduct> {
-    return this.http.get<IProduct>(
-      `${env.apiUrl}/api/products/${id}`,
+  getOne(code: string): Observable<IDiscount> {
+    return this.http.get<IDiscount>(
+      `${env.apiUrl}/api/discounts/${code}`,
       httpOptions
     );
   }

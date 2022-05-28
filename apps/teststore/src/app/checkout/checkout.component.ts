@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DeliveryTypeEnum, IDiscount, IProduct } from '@interfaces';
+import { DiscountsService } from '../shared/services/discounts.service';
 import {
   IPricingInfo,
   PriceCalculationService,
@@ -23,7 +24,10 @@ export class CheckoutComponent implements OnInit {
 
   orderForm!: FormGroup;
 
-  constructor(private priceCalculationService: PriceCalculationService) {}
+  constructor(
+    private priceCalculationService: PriceCalculationService,
+    private discountsService: DiscountsService
+  ) {}
 
   ngOnInit(): void {
     // Initliaze the form elements and their validators
@@ -56,8 +60,34 @@ export class CheckoutComponent implements OnInit {
   }
 
   applyDiscount(): void {
-    // TODO - handle discounts
-    console.warn('discount WiP');
+    this.discountsService
+      .getOne(this.orderForm.get('discount')?.value)
+      .subscribe({
+        next: (discount) => {
+          // check if the discount can be applied
+          if (
+            discount.remainingUses > 0 &&
+            new Date(discount.startsAt) < new Date() &&
+            (discount.expiresAt
+              ? new Date(discount.expiresAt) > new Date()
+              : true) &&
+            discount.isEnabled
+          ) {
+            this.appliedDiscount = discount;
+            alert('Discount Applied');
+          } else {
+            alert('Discount Invalid');
+            this.appliedDiscount = undefined;
+          }
+          this.updatePricing();
+        },
+        error: (error) => {
+          alert('Discount Invalid');
+          this.appliedDiscount = undefined;
+          this.updatePricing();
+          console.error(error);
+        },
+      });
   }
 
   purchaseOrder(): void {

@@ -17,6 +17,8 @@ export interface IPricingInfo {
   providedIn: 'root',
 })
 export class PriceCalculationService {
+  // TODO - write tests for PriceCalculationService
+
   /**
    * Calc
    * @param items

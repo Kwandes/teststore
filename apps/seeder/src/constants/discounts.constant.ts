@@ -22,7 +22,7 @@ export const discounts: IDiscount[] = [
   {
     discountId: '2df8ea99-bcf0-47ec-a6b3-388e8a9e3e74',
     code: 'discount-10-percent',
-    amount: 1,
+    amount: 10,
     type: DiscountTypeEnum.percentage,
     remainingUses: 100,
     startsAt: new Date('2020-3-13 12:30:00'),
