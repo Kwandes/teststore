@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DeliveryTypeEnum, IDiscount, IProduct } from '@interfaces';
+import {
+  IPricingInfo,
+  PriceCalculationService,
+} from '../shared/services/price-calculation.service';
 
 @Component({
   selector: 'teststore-checkout',
@@ -10,8 +14,16 @@ import { DeliveryTypeEnum, IDiscount, IProduct } from '@interfaces';
 export class CheckoutComponent implements OnInit {
   productsList: IProduct[] = [];
   appliedDiscount?: IDiscount;
+  calculatedPrice: IPricingInfo = {
+    subtotal: 404,
+    deliveryPrice: 404,
+    youSave: 404,
+    total: 404,
+  };
 
   orderForm!: FormGroup;
+
+  constructor(private priceCalculationService: PriceCalculationService) {}
 
   ngOnInit(): void {
     // Initliaze the form elements and their validators
@@ -29,26 +41,18 @@ export class CheckoutComponent implements OnInit {
       ]),
     });
     this.productsList = this.getItemsFromBasket();
+    this.updatePricing();
   }
 
-  getSubtotal(): number {
-    // TODO - add correct calculation
-    return 404;
-  }
-
-  getTotal(): number {
-    // TODO - add correct calculation
-    return 404;
-  }
-
-  getDiscountAmount(): number {
-    // TODO - add correct calculation
-    return 404;
-  }
-
-  getDeliveryPrice(): number {
-    // TODO - add correct calculation
-    return 404;
+  /**
+   * Updates the deliveryPrice variable based on the current selected option.
+   */
+  updatePricing(): void {
+    this.calculatedPrice = this.priceCalculationService.calculateTotal(
+      this.productsList,
+      this.orderForm.get('deliveryMethod')?.value,
+      this.appliedDiscount
+    );
   }
 
   applyDiscount(): void {
