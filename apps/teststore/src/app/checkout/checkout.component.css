@@ -96,6 +96,14 @@
   transition-duration: 0.3s;
 }
 
+.product-item-remove-btn:disabled {
+  background-color: rgb(253, 69, 69);
+  opacity: 0.7;
+  transform: scale(1);
+  color: lightgray;
+  transition-duration: 0.3s;
+}
+
 #discount-input {
   width: 90%;
   padding: 5px;
@@ -115,6 +123,13 @@
 
 #apply-discount-btn:hover {
   background-color: #2f4efc;
+  transition-duration: 0.3s;
+}
+
+#apply-discount-btn:disabled {
+  background-color: #2ca8fc;
+  opacity: 0.7;
+  color: lightgray;
   transition-duration: 0.3s;
 }
 
@@ -152,4 +167,43 @@
 
 .invalid-input {
   background-color: #ffcccb;
+}
+
+/* ====== Order status alert stuff ====== */
+.alert {
+  width: 60%;
+  height: 50px;
+  padding: 5px 10px;
+  margin: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alert-failure {
+  background-color: #ffcccb;
+  border: 2px solid #ff9c9c;
+  border-radius: 10px;
+}
+
+.alert-success {
+  background-color: #cbffcb;
+  border: 2px solid #7cff77;
+  border-radius: 10px;
+}
+
+.alert-text-section {
+}
+
+.alert-text {
+  font-size: large;
+}
+
+.alert-order-id {
+  font-size: small;
+}
+
+.alert-link {
+  text-decoration: underline;
 }

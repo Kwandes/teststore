@@ -51,6 +51,7 @@
           <button
             class="product-item-remove-btn"
             (click)="removeFromBasket(product)"
+            [disabled]="orderStatus !== 'wip'"
             data-cy="checkout-product-item-remove-btn"
           >
             X
@@ -75,6 +76,7 @@
         <button
           id="apply-discount-btn"
           (click)="applyDiscount()"
+          [disabled]="orderStatus !== 'wip'"
           data-cy="checkout-discount-apply-btn"
         >
           Apply
@@ -112,4 +114,15 @@
       </section>
     </div>
   </form>
+  <div class="alert alert-success" *ngIf="orderStatus === 'created'">
+    <div class="alert-text-section">
+      <span class="alert-text">Order placed</span><br />
+      <span class="alert-order-id">{{ createdOrder?.orderId }}</span>
+    </div>
+    <a class="alert-link" routerLink="/products">Go back to products</a>
+  </div>
+  <div class="alert alert-failure" *ngIf="orderStatus === 'failed'">
+    <span class="alert-text">Failed to place order</span>
+    <a class="alert-link" routerLink="/products">Go back to products</a>
+  </div>
 </div>

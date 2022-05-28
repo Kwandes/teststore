@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { DeliveryTypeEnum, IDiscount, IProduct } from '@interfaces';
+import { DeliveryTypeEnum, IDiscount, IOrder, IProduct } from '@interfaces';
 import { DiscountsService } from '../shared/services/discounts.service';
+import { OrdersService } from '../shared/services/orders.service';
 import {
   IPricingInfo,
   PriceCalculationService,
@@ -21,12 +22,16 @@ export class CheckoutComponent implements OnInit {
     youSave: 404,
     total: 404,
   };
+  createdOrder?: IOrder;
+
+  orderStatus: 'created' | 'failed' | 'wip' = 'wip';
 
   orderForm!: FormGroup;
 
   constructor(
     private priceCalculationService: PriceCalculationService,
-    private discountsService: DiscountsService
+    private discountsService: DiscountsService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit(): void {
@@ -90,14 +95,39 @@ export class CheckoutComponent implements OnInit {
       });
   }
 
+  /**
+   * Create a new order entry based on the checkout information.
+   */
   purchaseOrder(): void {
-    // TODO - handle order creation
-    console.warn('Purchase WiP');
-    console.log('order', {
-      email: this.orderForm.get('email')?.value,
-      discount: this.appliedDiscount,
-      items: this.productsList.map((p) => p.id),
-    });
+    if (!this.purchaseIsEnabled()) {
+      return;
+    }
+    this.ordersService
+      .create({
+        email: this.orderForm.get('email')?.value,
+        items: this.productsList.map((p) => p.id),
+        total: this.calculatedPrice.total,
+        subtotal: this.calculatedPrice.subtotal,
+        deliveryType: this.orderForm.get('deliveryMethod')?.value,
+        discountId: this.appliedDiscount?.discountId,
+      })
+      .subscribe({
+        next: (order) => {
+          this.orderStatus = 'created';
+          this.createdOrder = order;
+          // disable all inputs
+          this.orderForm.get('email')?.disable();
+          this.orderForm.get('deliveryMethod')?.disable();
+          this.orderForm.get('discount')?.disable();
+        },
+        error: (error) => {
+          console.error(error);
+          this.orderStatus = 'failed';
+          this.orderForm.get('email')?.disable();
+          this.orderForm.get('deliveryMethod')?.disable();
+          this.orderForm.get('discount')?.disable();
+        },
+      });
   }
 
   /**
