@@ -17,7 +17,8 @@
           "apps/teststore/src/assets"
         ],
         "styles": ["apps/teststore/src/styles.css"],
-        "scripts": []
+        "scripts": [],
+        "allowedCommonJsDependencies": ["validator"]
       },
       "configurations": {
         "production": {

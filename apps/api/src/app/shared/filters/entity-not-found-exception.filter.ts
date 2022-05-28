@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
 import { Response } from 'express';
 import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
@@ -8,7 +9,10 @@ import { EntityNotFoundError } from 'typeorm/error/EntityNotFoundError';
  */
 @Catch(EntityNotFoundError)
 export class EntityNotFoundExceptionFilter implements ExceptionFilter {
-  public catch(exception: EntityNotFoundError, host: ArgumentsHost) {
+  public catch(
+    exception: EntityNotFoundError,
+    host: ArgumentsHost
+  ): Response<any, Record<string, any>> {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     return response.status(404).json({

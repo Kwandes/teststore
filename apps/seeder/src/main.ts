@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { SeedModule } from './seed.module';
 import { SeedService } from './seed.service';
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const appCtx = await NestFactory.createApplicationContext(
     SeedModule.register()
   );

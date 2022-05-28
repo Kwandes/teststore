@@ -29,7 +29,5 @@ describe('AppController (e2e)', () => {
   });
 
   // Teardown down the app after the tests to avoid open handles
-  afterAll(() => {
-    app.close();
-  });
+  afterAll(() => app.close());
 });

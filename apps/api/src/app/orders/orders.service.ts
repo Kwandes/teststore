@@ -38,7 +38,7 @@ export class OrdersService {
    * @param request information for order creation.
    * @returns created order.
    */
-  async create(request: ICreateOrderRequest) {
+  async create(request: ICreateOrderRequest): Promise<IOrder> {
     const { email, items, total, subtotal, deliveryType, discountId } = request;
 
     const newOrder = await this.ordersRepo.create();

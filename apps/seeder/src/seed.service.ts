@@ -14,7 +14,7 @@ export class SeedService {
 
   // ========================
   // === MAIN SEED METHOD ===
-  async seed() {
+  async seed(): Promise<void> {
     // Clear database
     await this.resetDatabase();
 
@@ -27,7 +27,7 @@ export class SeedService {
   // ====================================
   // === DATABASE MANAGEMENT METHODS ====
 
-  async getEntities() {
+  async getEntities(): Promise<unknown[]> {
     const entities = [];
     try {
       this.connection.entityMetadatas.forEach((entity) =>
@@ -47,7 +47,7 @@ export class SeedService {
    * Cleans all the entities
    * Removes all data from database
    */
-  private async cleanAll(entities) {
+  private async cleanAll(entities): Promise<void> {
     try {
       const dbType = this.connection.options.type;
       const manager = getManager();
@@ -82,7 +82,7 @@ export class SeedService {
   /**
    * Reset the database, truncate all tables (remove all data)
    */
-  async resetDatabase() {
+  private async resetDatabase(): Promise<void> {
     this.logger.debug('RESETTING DATABASE');
 
     const entities = await this.getEntities();
@@ -93,22 +93,20 @@ export class SeedService {
 
   // ====================================
   // === ENTITY SEEDING METHODS ====
-  async seedDiscounts() {
+  private async seedDiscounts(): Promise<void> {
     try {
       const response = await Promise.all(this.discountsService.create());
       this.logger.debug(`✅ Discounts created: ${response.length}`);
-      return response;
     } catch (error) {
       this.logger.warn(`❌ Discounts failed to seed`);
       this.logger.error(error);
     }
   }
 
-  async seedOrders() {
+  private async seedOrders(): Promise<void> {
     try {
       const response = await Promise.all(this.ordersService.create());
       this.logger.debug(`✅ Orders created: ${response.length}`);
-      return response;
     } catch (error) {
       this.logger.warn(`❌ Orders failed to seed`);
       this.logger.error(error);
