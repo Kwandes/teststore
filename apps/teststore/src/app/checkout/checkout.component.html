@@ -114,15 +114,34 @@
       </section>
     </div>
   </form>
-  <div class="alert alert-success" *ngIf="orderStatus === 'created'">
+  <div
+    class="alert alert-success"
+    *ngIf="orderStatus === 'created'"
+    data-cy="checkout-alert"
+  >
     <div class="alert-text-section">
-      <span class="alert-text">Order placed</span><br />
-      <span class="alert-order-id">{{ createdOrder?.orderId }}</span>
+      <span class="alert-text" data-cy="checkout-alert-text">Order placed</span
+      ><br />
+      <span class="alert-order-id" data-cy="checkout-alert-text-id">{{
+        createdOrder?.orderId
+      }}</span>
     </div>
-    <a class="alert-link" routerLink="/products">Go back to products</a>
+    <a
+      class="alert-link"
+      routerLink="/products"
+      data-cy="checkout-alert-products-link"
+      >Go back to products</a
+    >
   </div>
   <div class="alert alert-failure" *ngIf="orderStatus === 'failed'">
-    <span class="alert-text">Failed to place order</span>
-    <a class="alert-link" routerLink="/products">Go back to products</a>
+    <span class="alert-text" data-cy="checkout-alert-text"
+      >Failed to place order</span
+    >
+    <a
+      class="alert-link"
+      routerLink="/products"
+      data-cy="checkout-alert-products-link"
+      >Go back to products</a
+    >
   </div>
 </div>
