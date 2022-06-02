@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { calculateDeliveryPriceParams } from './price-calculation-test-data.constant';
+import { calculateDeliveryPriceParams, calculateSubtotalItems } from './price-calculation-test-data.constant';
 import { PriceCalculationService } from './price-calculation.service';
 
 describe('CalculatePriceService', () => {
@@ -16,6 +16,18 @@ describe('CalculatePriceService', () => {
     (params) => {
       it(`Should correctly determine given delivery type price: ${params.delieryType} = ${params.expectedPrice}`, () => {
         expect(service.calculateDeliveryPrice(params.delieryType)).toEqual(
+          params.expectedPrice
+        );
+      });
+    }
+  );
+
+  // Parametrized test of the 'calculateSubtotal()' method of PriceCalculationService
+  describe.each(calculateSubtotalItems)(
+    'calculateSubtotal()',
+    (params) => {
+      it(`Should correctly determine given items: ${params.items} equal to subtotal = ${params.expectedPrice}`, () => {
+        expect(service.calculateSubtotal(params.items)).toEqual(
           params.expectedPrice
         );
       });
