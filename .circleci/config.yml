@@ -39,8 +39,9 @@ jobs:
           POSTGRES_PASSWORD: root
           POSTGRES_DB: teststore
         auth:
-          username: root
-          password: root
+          # CircleCi variables that we for some reason need in order to pull the Postgres image...
+          username: $DOCKERHUB_USERNAME
+          password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
       - node/install-packages:
