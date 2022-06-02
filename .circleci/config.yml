@@ -9,7 +9,7 @@ orbs:
 jobs:
   build_api:
     docker:
-      - image: cimg/node:16.14.2
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
@@ -19,7 +19,7 @@ jobs:
           command: npm run build:api
   build_teststore:
     docker:
-      - image: cimg/node:16.14.2
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
@@ -29,7 +29,7 @@ jobs:
           command: npm run build:teststore
   test:
     docker:
-      - image: cimg/node:16.15.1
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
@@ -39,7 +39,7 @@ jobs:
           command: npm run test:ci
   eslint:
     docker:
-      - image: cimg/node:16.15.1
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
@@ -49,7 +49,7 @@ jobs:
           command: npm run lint
   format:
     docker:
-      - image: cimg/node:16.15.1
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
@@ -59,7 +59,7 @@ jobs:
           command: npm run format:check
   test_e2e:
     docker:
-      - image: cimg/node:16.15.1
+      - image: cimg/node:lts
     steps:
       - checkout
       - node/install-packages:
