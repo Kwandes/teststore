@@ -5,7 +5,7 @@ version: 2.1
 # See: https://circleci.com/docs/2.0/orb-intro/
 orbs:
   node: circleci/node@4.7
-  cypress: cypress-io/cypress@2.0.0
+  cypress: cypress-io/cypress@1
 
 jobs:
   build_api:
@@ -30,7 +30,17 @@ jobs:
           command: npm run build:teststore
   test:
     docker:
+      # Primary container where the tests are run
       - image: cimg/node:lts
+        # Service container image
+      - image: cimg/postgres:14.0
+        environment:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+        auth:
+          username: root
+          password: root
     steps:
       - checkout
       - node/install-packages:
@@ -58,16 +68,6 @@ jobs:
       - run:
           name: Run formatting checks
           command: npm run format:check
-  test_e2e:
-    docker:
-      - image: cimg/node:lts
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run:
-          name: Run Cypress E2E tests
-          command: npm run e2e:ci
 
 workflows:
   Build: # This is the name of the workflow, feel free to change it to better match your workflow.
@@ -84,6 +84,6 @@ workflows:
   Format:
     jobs:
       - format
-  E2E:
+  Build_e2e:
     jobs:
-      - test_e2e
+      - cypress/run
