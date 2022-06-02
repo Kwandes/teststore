@@ -14,8 +14,8 @@ describe('CalculatePriceService', () => {
   describe.each(calculateDeliveryPriceParams)(
     'calculateDeliveryPrice()',
     (params) => {
-      it(`Should correctly determine given delivery type price: ${params.delieryType} = ${params.expectedPrice}`, () => {
-        expect(service.calculateDeliveryPrice(params.delieryType)).toEqual(
+      it(`Should correctly determine given delivery type price: ${params.deliveryType} = ${params.expectedPrice}`, () => {
+        expect(service.calculateDeliveryPrice(params.deliveryType)).toEqual(
           params.expectedPrice
         );
       });

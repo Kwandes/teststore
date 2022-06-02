@@ -2,9 +2,9 @@ import { DeliveryTypeEnum, DiscountTypeEnum, IDiscount, IProduct } from '@interf
 
 // data for the 'calculateDeliveryPrice()' method of PriceCalculationService
 export const calculateDeliveryPriceParams = [
-  { delieryType: DeliveryTypeEnum.homeDelivery, expectedPrice: 50 },
-  { delieryType: DeliveryTypeEnum.pickupPoint, expectedPrice: 25 },
-  { delieryType: DeliveryTypeEnum.selfPickup, expectedPrice: 0 },
+  { deliveryType: DeliveryTypeEnum.homeDelivery, expectedPrice: 50 },
+  { deliveryType: DeliveryTypeEnum.pickupPoint, expectedPrice: 25 },
+  { deliveryType: DeliveryTypeEnum.selfPickup, expectedPrice: 0 },
 ];
 
 // data for the 'calculateSUbtotal()' method of Price CalculationService
