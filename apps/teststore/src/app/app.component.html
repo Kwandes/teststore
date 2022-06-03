@@ -5,6 +5,7 @@
       class="products-btn nav-btn"
       [ngClass]="currentUrl === '/products' ? 'current-page' : ''"
       routerLink="products"
+      data-cy="products-button-test"
     >
       Products
     </button>
@@ -12,6 +13,7 @@
       class="checkout-btn nav-btn"
       [ngClass]="currentUrl === '/checkout' ? 'current-page' : ''"
       routerLink="checkout"
+      data-cy="checkout-button-test"
     >
       Checkout
     </button>

@@ -34,7 +34,7 @@ export class PriceCalculationService {
     const subtotal = this.calculateSubtotal(items);
     const deliveryPrice = this.calculateDeliveryPrice(deliveryType);
     const calculatedDiscount = discount
-      ? this.calulcateDiscount(discount, subtotal)
+      ? this.calculateDiscount(discount, subtotal)
       : { discountedAmount: subtotal, savedAmount: 0 };
     return {
       subtotal,
@@ -52,7 +52,7 @@ export class PriceCalculationService {
    * @param subtotal subtotal.
    * @returns discount amount and saved amount.
    */
-  calulcateDiscount(
+  calculateDiscount(
     discount: IDiscount,
     subtotal: number
   ): { discountedAmount: number; savedAmount: number } {
