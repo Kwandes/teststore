@@ -26,7 +26,7 @@ jobs:
 
       - name: Docker tag
         shell: bash
-        run: docker tag shit-api kwandes/teststore:api
+        run: docker tag test-api kwandes/teststore:api
 
       - name: Docker push
         shell: bash
@@ -50,7 +50,7 @@ jobs:
 
       - name: Docker tag
         shell: bash
-        run: docker tag shit-teststore kwandes/teststore:teststore
+        run: docker tag test-teststore kwandes/teststore:teststore
 
       - name: Docker push
         shell: bash
