@@ -34,3 +34,54 @@ describe('teststore - go to products page', () => {
     cy.url().should('include', '/products');
   });
 });
+
+//TEST FOR TESTSTORE LOGO REDIRECTION TO GIT FROM PRODUCTS PAGE
+describe('teststore - go to teststore github repository from /products', () => {
+  beforeEach(() => {
+    cy.visit('/products');
+    cy.intercept('GET', '/api/products', {
+      body: products,
+      statusCode: 200,
+    });
+  });
+
+  it('should redirect to the teststore github repo page and change route after the TESTSTORE logo is pressed', () => {
+    //REDIRECTION ON BUTTON PRESSED
+    cy.get('[data-cy=logo-test]').contains('TESTSTORE').click();
+    cy.url().should('include', 'https://github.com/Kwandes/teststore');
+  });
+});
+
+//TEST FOR TESTSTORE LOGO REDIRECTION TO GIT FROM CHECKOUT PAGE
+describe('teststore - go to teststore github repository from /checkout', () => {
+  beforeEach(() => {
+    cy.visit('/checkout');
+    cy.intercept('GET', '/api/products', {
+      body: products,
+      statusCode: 200,
+    });
+  });
+
+  it('should redirect to the teststore github repo page and change route after the TESTSTORE logo is pressed', () => {
+    //REDIRECTION ON BUTTON PRESSED
+    cy.get('[data-cy=logo-test]').contains('TESTSTORE').click();
+    cy.url().should('include', 'https://github.com/Kwandes/teststore');
+  });
+});
+
+//TEST FOR DEFAULT REDIRECTION TO '/products' FROM ANY PAGE WHEN HIT ROUTE IS NOT CHECKOUT/PRODUCTS
+describe('teststore - go to /products by default if entered route is not /products or /checkout', () => {
+  beforeEach(() => {
+    cy.visit('/checkout');
+    cy.intercept('GET', '/api/products', {
+      body: products,
+      statusCode: 200,
+    });
+  });
+
+  it('should redirect to the default products page and change route after the user enters an incorrect route', () => {
+    cy.visit('/random');
+    //REDIRECTS TO DEFAULT - '/products' PAGE
+    cy.url().should('include', '/products');
+  });
+});
