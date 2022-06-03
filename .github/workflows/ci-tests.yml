@@ -1,0 +1,55 @@
+# Continuos Integration workflow for testing pushed commits and pull requests
+name: Test CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Service containers to run with `test`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install and test the applications
+        # Install the apps using npm ci (ensures a clean install)
+        # Seed the database with sample data
+        # Run the test target for ci (skips the NX cache ensuring a clean run)
+        run: |
+          npm ci
+          npm run seed
+          npm run test:ci
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+          POSTGRES_PORT: 5432

@@ -1,0 +1,25 @@
+# Continuous Integration workflow for running end-to-end tests
+name: E2E CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+
+      - name: Install and run end-to-end tests
+        # Install the apps using npm ci (ensures a clean install)
+        run: |
+          npm ci
+          npm run e2e:ci

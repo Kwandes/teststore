@@ -1,0 +1,57 @@
+# Build and push images of the apps to Docker hub. Only occurs for pushes for the production branch and manual dispatch
+name: Build apps
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - production
+
+jobs:
+  build_api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Docker build API
+        shell: bash
+        run: docker build -t test-api -f ./.deploy/API_Dockerfile .
+
+      - name: Docker tag
+        shell: bash
+        run: docker tag shit-api kwandes/teststore:api
+
+      - name: Docker push
+        shell: bash
+        run: docker push kwandes/teststore:api
+
+  build_teststore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+
+      - name: Docker build API
+        shell: bash
+        run: docker build -t test-teststore -f ./.deploy/TESTSTORE_Dockerfile .
+
+      - name: Docker tag
+        shell: bash
+        run: docker tag shit-teststore kwandes/teststore:teststore
+
+      - name: Docker push
+        shell: bash
+        run: docker push kwandes/teststore:teststore
