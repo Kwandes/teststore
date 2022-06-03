@@ -28,6 +28,9 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v2
@@ -37,9 +40,16 @@ jobs:
           node-version: '16'
 
       - name: Install and test the applications
-        # Install the apps using npm ci (ensures a clean install) and run the test target for ci (skips the NX cache ensuring a clean run)
+        # Install the apps using npm ci (ensures a clean install)
+        # Seed the database with sample data
+        # Run the test target for ci (skips the NX cache ensuring a clean run)
         run: |
           npm ci
+          npm run seed
           npm run test:ci
         env:
-          POSTGRES_HOST: postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+          POSTGRES_PORT: 5432
