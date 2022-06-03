@@ -47,8 +47,9 @@ jobs:
           npm ci
           npm run seed
           npm run test:ci
-        env: POSTGRES_HOST=localhost
-          POSTGRES_PORT=5432
-          POSTGRES_USER=root
-          POSTGRES_PASSWORD=root
-          POSTGRES_DATABASE=teststore
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+          POSTGRES_PORT: 5432
