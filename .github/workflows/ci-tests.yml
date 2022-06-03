@@ -11,6 +11,24 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
+    # Service containers to run with `test`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+          POSTGRES_DB: teststore
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup Node
@@ -23,3 +41,5 @@ jobs:
         run: |
           npm ci
           npm run test:ci
+        env:
+          POSTGRES_HOST: postgres
