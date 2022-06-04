@@ -38,7 +38,7 @@ describe('AppController (e2e)', () => {
         });
     });
 
-    // TODO - implement test
+    // TODO - implement test. Potentially impossible and instead should be performed as a manual test
     it('returns Status Code 500 - Internal Server Error when request fails', () => {});
   });
 
@@ -54,12 +54,36 @@ describe('AppController (e2e)', () => {
         });
     });
     // TODO - implement test
-    it('returns Status Code 404 - Not Found when id references a non-existent product', () => {});
+    it('returns Status Code 404 - Not Found when id references a non-existent product', () => {
+      const productId = '666666'; // Doesn't match any product
+      return request(app.getHttpServer())
+        .get(`/products/${productId}`)
+        .expect(404); // verify HTTP code
+    });
     // TODO - implement test
-    it('returns Status Code 400 - Bad Request when id is not a number', () => {});
+    it('returns Status Code 400 - Bad Request when id is not a number', () => {
+      const productId = 'invalidId'; // Invalid id
+      return request(app.getHttpServer())
+        .get(`/products/${productId}`)
+        .expect(400) // verify HTTP code
+        .expect((response) => {
+          // verify response body
+          expect(response.body?.message).toEqual(
+            'Validation failed (numeric string is expected)'
+          );
+        });
+    });
     // TODO - implement test
-    it('returns Status Code 200 - OK and a list of products when id is null', () => {});
-    // TODO - implement test
+    it('returns Status Code 200 - OK and a list of products when id is null', () => {
+      return request(app.getHttpServer())
+        .get('/products/')
+        .expect(200) // verify HTTP code
+        .expect((response) => {
+          // verify response body
+          expect(response.body).toEqual(products);
+        });
+    });
+    // TODO - implement test. Potentially impossible and instead should be performed as a manual test
     it('returns Status Code 500 - Internal Server Error when request fails', () => {});
   });
 
