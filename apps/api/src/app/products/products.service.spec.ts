@@ -5,12 +5,15 @@ import { firstValueFrom } from 'rxjs';
 import { products } from './products.constant';
 import { ProductsService as Service } from './products.service';
 
+// Declare the mock of the HttpModule dependency, axios
 jest.mock('axios');
 
 describe('Persons Service', () => {
+  // Reference variables used for spying
   let service: Service;
   let httpService: HttpService;
 
+  // Reference to the mocked HttpModule dependency, axios
   const mockedAxios = axios as jest.Mocked<typeof axios>;
 
   beforeAll(async () => {
@@ -18,11 +21,12 @@ describe('Persons Service', () => {
       imports: [HttpModule],
       providers: [Service],
     }).compile();
+    // Set the references
     service = module.get<Service>(Service);
     httpService = module.get<HttpService>(HttpService);
   });
 
-  // clean up the mocks, resetting the "timesCalled" counter for httpService
+  // Clean up the mocks, resetting the "timesCalled" counter for httpService
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -33,6 +37,7 @@ describe('Persons Service', () => {
 
   describe('findAll()', () => {
     it('should call httpService.get 1 time"', async () => {
+      // A bit of funky casting to get around issues with strict mode requiring very specific data formats
       mockedAxios.get.mockReturnValueOnce({
         data: products,
       } as unknown as Promise<unknown>);
@@ -46,6 +51,7 @@ describe('Persons Service', () => {
     });
 
     it('should call httpService.get and receive a list of products"', async () => {
+      // A bit of funky casting to get around issues with strict mode requiring very specific data formats
       mockedAxios.get.mockReturnValueOnce({
         data: products,
       } as unknown as Promise<unknown>);
@@ -58,6 +64,7 @@ describe('Persons Service', () => {
   describe('findOne()', () => {
     const productId = '1'; //  corresponds to products[0]
     it('should call httpService.get 1 time"', async () => {
+      // A bit of funky casting to get around issues with strict mode requiring very specific data formats
       mockedAxios.get.mockReturnValueOnce({
         data: products[0],
       } as unknown as Promise<unknown>);
@@ -71,12 +78,13 @@ describe('Persons Service', () => {
     });
 
     it('should call httpService.get and receive a single product"', async () => {
+      // A bit of funky casting to get around issues with strict mode requiring very specific data formats
       mockedAxios.get.mockReturnValueOnce({
-        data: products,
+        data: products[0],
       } as unknown as Promise<unknown>);
 
-      const response = await firstValueFrom(service.findAll());
-      expect(response).toEqual(products);
+      const response = await firstValueFrom(service.findOne(productId));
+      expect(response).toEqual(products[0]);
     });
   });
 });
