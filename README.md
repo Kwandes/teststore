@@ -99,7 +99,25 @@ nx run-many --maxParallel 2 --parallel true --projects api, teststore --target s
 
 Find out more about how to use NX [here](https://nx.dev/latest/angular/getting-started/nx-cli)
 
-#### Documentation
+## Deployment
+
+The repository includes Dockerfiles for building the API and frontend applications.
+
+#### API
+
+```sh
+docker build -t test-api -f ./.deploy/API_Dockerfile .
+docker run --name test-api --restart unless-stopped -dp 3333:3333 test-api
+```
+
+#### Teststore
+
+```sh
+docker build -t test-teststore -f ./.deploy/TESTSTORE_Dockerfile .
+docker run --name test-teststore --restart unless-stopped -dp 4200:80 test-teststore
+```
+
+### Documentation
 
 The API is documented using SwaggerUi, which you can access by runnign the api and navigating to [localhost:3333/api](http://localhost:3333/api)
 

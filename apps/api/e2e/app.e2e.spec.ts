@@ -3,6 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 
+jest.setTimeout(30000);
+
 describe('AppController (e2e)', () => {
   let app: INestApplication; // reference to the app instance
 

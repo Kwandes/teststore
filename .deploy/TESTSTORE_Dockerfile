@@ -1,0 +1,42 @@
+# Lightweight environment with node pre-installed
+# Build with docker build -t test-teststore -f ./.deploy/TESTSTORE_Dockerfile . 
+# Run with docker run --name test-teststore --restart unless-stopped -dp 4200:80 test-teststore
+FROM node:16-alpine AS builder
+
+# Directory to work in the container
+WORKDIR /app
+
+# Copy package.json to the root of the WORKDIR
+COPY package.json ./
+
+# Copy all files different to local machine to container
+# The way caching works, any changes to any files will force everything under it to
+#   rebuild all subsequent steps
+COPY nx.json ./nx.json
+COPY tsconfig.base.json ./tsconfig.base.json
+COPY angular.json ./project.json
+COPY decorate-angular-cli.js ./decorate-angular-cli.js
+COPY ./libs ./libs
+COPY ./apps/api ./apps/api
+COPY ./apps/teststore ./apps/teststore
+COPY ./apps/seeder ./apps/seeder
+
+RUN npm install && npx nx build teststore
+
+###### Build container END
+
+###### runtime environment START
+
+# Lightweight environment with node nginx-installed
+FROM nginx:alpine
+
+# Directory to work in the container
+WORKDIR /app
+
+# Copy nginx config to nginx container
+COPY .deploy/nginx.conf /etc/nginx/nginx.conf
+# Copy build files to nginx container
+COPY --from=builder /app/dist/apps/teststore /usr/share/nginx/html
+
+# Execute nginx on container to launch application after setting angular ENVs
+CMD ["/bin/sh",  "-c",  "exec nginx -g 'daemon off;'"]
