@@ -35,10 +35,22 @@ describe('Products Page E2E UI Tests', () => {
   //TEST CASE 4 - SHOULD BE REFACTORED?
   it('should get an item with a title, price, picture, description and add-to-basket button', () => {
     cy.url().should('include', '/products');
-    cy.get('[data-cy=products-product-item-title]').first().should('be.visible');
-    cy.get('[data-cy=products-product-item-price]').first().contains('Price: 109.95 DKK').should('be.visible');
-    cy.get('[data-cy=products-product-item-image]').first().should('be.visible');
-    cy.get('[data-cy=products-product-item-description]').first().should('be.visible');
-    cy.get('[data-cy=products-product-item-add-to-basket-btn]').first().contains('Add to basket').should('be.visible');
+    cy.get('[data-cy=products-product-item-title]')
+      .first()
+      .should('be.visible');
+    cy.get('[data-cy=products-product-item-price]')
+      .first()
+      .contains('Price: 109.95 DKK')
+      .should('be.visible');
+    cy.get('[data-cy=products-product-item-image]')
+      .first()
+      .should('be.visible');
+    cy.get('[data-cy=products-product-item-description]')
+      .first()
+      .should('be.visible');
+    cy.get('[data-cy=products-product-item-add-to-basket-btn]')
+      .first()
+      .contains('Add to basket')
+      .should('be.visible');
   });
 });
