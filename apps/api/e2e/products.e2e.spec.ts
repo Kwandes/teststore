@@ -9,7 +9,7 @@ import { products } from '../src/app/products/products.constant';
 // set the timeout to cover request that take longer to perform
 jest.setTimeout(30000);
 
-describe('AppController (e2e)', () => {
+describe('ProductsController (e2e)', () => {
   let app: INestApplication; // reference to the app instance
 
   beforeAll(async () => {
