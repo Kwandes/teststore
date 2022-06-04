@@ -1,0 +1,82 @@
+import { HttpModule, HttpService } from '@nestjs/axios';
+import { Test, TestingModule } from '@nestjs/testing';
+import axios from 'axios';
+import { firstValueFrom } from 'rxjs';
+import { products } from './products.constant';
+import { ProductsService as Service } from './products.service';
+
+jest.mock('axios');
+
+describe('Persons Service', () => {
+  let service: Service;
+  let httpService: HttpService;
+
+  const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+  beforeAll(async () => {
+    const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule],
+      providers: [Service],
+    }).compile();
+    service = module.get<Service>(Service);
+    httpService = module.get<HttpService>(HttpService);
+  });
+
+  // clean up the mocks, resetting the "timesCalled" counter for httpService
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  describe('findAll()', () => {
+    it('should call httpService.get 1 time"', async () => {
+      mockedAxios.get.mockReturnValueOnce({
+        data: products,
+      } as unknown as Promise<unknown>);
+      jest.spyOn(httpService, 'get');
+
+      await firstValueFrom(service.findAll());
+      expect(httpService.get).toHaveBeenCalledTimes(1);
+      expect(httpService.get).toHaveBeenCalledWith(
+        'https://fakestoreapi.com/products'
+      );
+    });
+
+    it('should call httpService.get and receive a list of products"', async () => {
+      mockedAxios.get.mockReturnValueOnce({
+        data: products,
+      } as unknown as Promise<unknown>);
+
+      const response = await firstValueFrom(service.findAll());
+      expect(response).toEqual(products);
+    });
+  });
+
+  describe('findOne()', () => {
+    const productId = '1'; //  corresponds to products[0]
+    it('should call httpService.get 1 time"', async () => {
+      mockedAxios.get.mockReturnValueOnce({
+        data: products[0],
+      } as unknown as Promise<unknown>);
+      jest.spyOn(httpService, 'get');
+
+      await firstValueFrom(service.findOne(productId));
+      expect(httpService.get).toHaveBeenCalledTimes(1);
+      expect(httpService.get).toHaveBeenCalledWith(
+        `https://fakestoreapi.com/products/${productId}`
+      );
+    });
+
+    it('should call httpService.get and receive a single product"', async () => {
+      mockedAxios.get.mockReturnValueOnce({
+        data: products,
+      } as unknown as Promise<unknown>);
+
+      const response = await firstValueFrom(service.findAll());
+      expect(response).toEqual(products);
+    });
+  });
+});
