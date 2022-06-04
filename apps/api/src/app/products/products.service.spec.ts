@@ -70,7 +70,7 @@ describe('Persons Service', () => {
       } as unknown as Promise<unknown>);
       jest.spyOn(httpService, 'get');
 
-      await firstValueFrom(service.findOne(productId));
+      await service.findOne(productId);
       expect(httpService.get).toHaveBeenCalledTimes(1);
       expect(httpService.get).toHaveBeenCalledWith(
         `https://fakestoreapi.com/products/${productId}`
@@ -83,7 +83,7 @@ describe('Persons Service', () => {
         data: products[0],
       } as unknown as Promise<unknown>);
 
-      const response = await firstValueFrom(service.findOne(productId));
+      const response = await service.findOne(productId);
       expect(response).toEqual(products[0]);
     });
   });

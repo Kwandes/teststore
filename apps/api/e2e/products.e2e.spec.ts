@@ -53,14 +53,18 @@ describe('AppController (e2e)', () => {
           expect(response.body).toEqual(products[0]);
         });
     });
-    // TODO - implement test
     it('returns Status Code 404 - Not Found when id references a non-existent product', () => {
       const productId = '666666'; // Doesn't match any product
       return request(app.getHttpServer())
         .get(`/products/${productId}`)
-        .expect(404); // verify HTTP code
+        .expect(404) // verify HTTP code
+        .expect((response) => {
+          // verify response body
+          expect(response.body?.message).toEqual(
+            `Product with id ${productId} not found`
+          );
+        });
     });
-    // TODO - implement test
     it('returns Status Code 400 - Bad Request when id is not a number', () => {
       const productId = 'invalidId'; // Invalid id
       return request(app.getHttpServer())
@@ -73,7 +77,6 @@ describe('AppController (e2e)', () => {
           );
         });
     });
-    // TODO - implement test
     it('returns Status Code 200 - OK and a list of products when id is null', () => {
       return request(app.getHttpServer())
         .get('/products/')

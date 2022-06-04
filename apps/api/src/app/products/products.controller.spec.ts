@@ -21,8 +21,8 @@ describe('Products Controller', () => {
         {
           provide: Service,
           useFactory: () => ({
-            findAll: jest.fn().mockReturnValue(of(products)),
-            findOne: jest.fn().mockReturnValue(of(products[productId])),
+            findAll: jest.fn().mockReturnValue(of(products)), // an observale of products list
+            findOne: jest.fn().mockReturnValue(products[productId]), // a promise turned into a singular product item
           }),
         },
       ],
@@ -57,7 +57,7 @@ describe('Products Controller', () => {
     it('should call findOne 1 time"', async () => {
       jest.spyOn(service, 'findOne');
 
-      await firstValueFrom(controller.get(productId));
+      await controller.get(productId);
       expect(service.findOne).toHaveBeenCalledTimes(1);
       expect(service.findOne).toHaveBeenCalledWith(productId);
     });
@@ -65,7 +65,7 @@ describe('Products Controller', () => {
     it('should call findOne and receive a single product"', async () => {
       jest.spyOn(service, 'findAll');
 
-      const response = await firstValueFrom(controller.get(productId));
+      const response = await controller.get(productId);
       expect(response).toEqual(products[productId]);
     });
   });
