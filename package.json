@@ -66,6 +66,7 @@
     "@nrwl/workspace": "14.1.5",
     "@types/jest": "27.4.1",
     "@types/node": "16.11.7",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "~5.18.0",
     "@typescript-eslint/parser": "~5.18.0",
     "cypress": "^9.1.0",

@@ -13,7 +13,7 @@ export class ProductsController {
   }
 
   @Get(':id')
-  get(@Param('id', ParseIntPipe) id: string): Observable<IProduct> {
+  async get(@Param('id', ParseIntPipe) id: string): Promise<IProduct> {
     return this.productsService.findOne(id);
   }
 }
