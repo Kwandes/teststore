@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { Test, TestingModule } from '@nestjs/testing';
-import { firstValueFrom, of, from } from 'rxjs';
 import { OrdersController as Controller } from './orders.controller';
 import { OrdersService as Service } from './orders.service';
-import { IOrder } from '@interfaces';
+import { CreateOrderRequest, IOrder } from '@interfaces';
 import { DeliveryTypeEnum, DiscountTypeEnum } from '@interfaces';
+
 const orders: IOrder[] = [
   {
     orderId: 'a46d3500-993e-40e7-ab13-3b943519bd15',
@@ -35,13 +35,12 @@ const orders: IOrder[] = [
   },
 ];
 
-const orderToCreate = {
+const createOrderRequest: CreateOrderRequest = {
   email: 'threeItems@discountAmount.none',
   items: [4, 5, 6],
   total: 500,
   subtotal: 222.22,
   deliveryType: DeliveryTypeEnum.homeDelivery,
-  discount: null,
 };
 
 describe('Orders Controller', () => {
@@ -58,7 +57,7 @@ describe('Orders Controller', () => {
         {
           provide: Service,
           useFactory: () => ({
-            findAll: jest.fn().mockReturnValue(of(orders)),
+            findAll: jest.fn().mockReturnValue(orders),
             findOne: jest.fn().mockReturnValue(orders[0]),
             create: jest.fn().mockReturnValue(orders[1]),
           }),
@@ -78,35 +77,62 @@ describe('Orders Controller', () => {
     it('should call findAll 1 time"', async () => {
       jest.spyOn(service, 'findAll');
 
-      await firstValueFrom(from(controller.getAll()));
+      await controller.getAll();
       expect(service.findAll).toHaveBeenCalledTimes(1);
       expect(service.findAll).toHaveBeenCalledWith();
     });
 
-    /* it('should call findAll and receive a list of products"', async () => {
+    it('should call findAll and receive a list of orders"', async () => {
       jest.spyOn(service, 'findAll');
 
-      const response = await firstValueFrom(controller.getAll());
-      expect(response).toEqual(products);
+      const response = await controller.getAll();
+      expect(response).toEqual(orders);
     });
-    */
   });
-  /*
-  describe('getOne()', () => {
+
+  describe('get()', () => {
     it('should call findOne 1 time"', async () => {
       jest.spyOn(service, 'findOne');
 
-      await controller.get(productId);
+      await controller.get('a46d3500-993e-40e7-ab13-3b943519bd15');
       expect(service.findOne).toHaveBeenCalledTimes(1);
-      expect(service.findOne).toHaveBeenCalledWith(productId);
+      expect(service.findOne).toHaveBeenCalledWith(
+        'a46d3500-993e-40e7-ab13-3b943519bd15'
+      );
     });
 
-    it('should call findOne and receive a single product"', async () => {
+    it('should call findOne and receive a single order"', async () => {
       jest.spyOn(service, 'findAll');
 
-      const response = await controller.get(productId);
-      expect(response).toEqual(products[productId]);
+      const response = await controller.get(
+        'a46d3500-993e-40e7-ab13-3b943519bd15'
+      );
+      expect(response).toEqual(orders[0]);
     });
   });
-  */
+
+  describe('create()', () => {
+    it('should call create 1 time with the request object as value', async () => {
+      jest.spyOn(service, 'create');
+
+      await controller.create(createOrderRequest);
+      expect(service.create).toHaveBeenCalledTimes(1);
+      expect(service.create).toHaveBeenCalledWith(createOrderRequest);
+    });
+
+    it('should call create 1 time with the null as value', async () => {
+      jest.spyOn(service, 'create');
+
+      await controller.create(null);
+      expect(service.create).toHaveBeenCalledTimes(2); //2 because we already called it once in the test above;
+      expect(service.create).toHaveBeenCalledWith(null);
+    });
+
+    it('should call create and return a created order', async () => {
+      jest.spyOn(service, 'create');
+
+      const response = await controller.create(createOrderRequest);
+      expect(response).toEqual(orders[1]);
+    });
+  });
 });
