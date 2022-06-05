@@ -83,13 +83,12 @@ describe('Products Page E2E UI Tests', () => {
   });
 
   it('should display an alert when the user tries to add product items to the basket totalling over 666666 in price', () => {
-    // Set the product items to session storage to a single product with a fake price that is right at the limit of 666666
+    // Create the list of items that totals 666.993,33 in price
+    const basketItems = Array(666).fill(products[13]); // products[13] corresponds to the item with the highest price of 999,99
+    // Set the product items to session storage to a list of items that is right at the limit of 666666
     // Get the session stroage from the actual browser instance window (the cypress instance has its own session storage independant from the test window)
     cy.window().then((window) => {
-      window.sessionStorage.setItem(
-        'basket',
-        JSON.stringify([{ price: 666665 }])
-      );
+      window.sessionStorage.setItem('basket', JSON.stringify(basketItems));
       cy.spy(window, 'alert').as('alert');
     });
     // Validate the text of the alert.
@@ -99,7 +98,7 @@ describe('Products Page E2E UI Tests', () => {
     });
     // Add an extra product, going over the total price limit and triggering an alert
     cy.get('[data-cy=products-product-item-add-to-basket-btn]')
-      .first()
+      .eq(13) // corresponds to products[14] aka the most expensive item
       .click()
       .then(() => {
         cy.get('@alert').should('have.been.calledOnce');
