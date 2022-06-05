@@ -6,26 +6,13 @@ import { AppModule } from '../src/app/app.module';
 import { configService } from '../src/app/config/config.service';
 
 const order = {
-  createdAt: '2022-06-05T20:51:41.484Z',
-  updatedAt: '2022-06-05T20:51:41.484Z',
-  orderId: 'a46d3500-993e-40e7-ab13-3b943519bd15',
-  email: 'fiveItems@discountAmount.home',
+  orderId: 'd6322630-9b0e-4262-baaa-cd30e99057a5',
+  email: 'oneItem@noDiscount.pickup',
   items: [1, 1, 2, 3, 4],
   total: '314.18',
-  subtotal: '224.18',
-  deliveryType: 'home_delivery',
-  discount: {
-    createdAt: '2022-06-05T20:51:41.234Z',
-    updatedAt: '2022-06-05T20:51:41.234Z',
-    discountId: '78c0a432-59f8-4a6c-b89d-57030a6628d9',
-    code: 'discount-100',
-    amount: 100,
-    type: 'amount',
-    remainingUses: 100,
-    startsAt: '1977-12-26T11:30:00.000Z',
-    expiresAt: null,
-    isEnabled: true,
-  },
+  subtotal: '319.18',
+  deliveryType: 'pickup_point',
+  discount: null,
 };
 
 jest.setTimeout(30000);
@@ -51,7 +38,9 @@ describe('Orders controller (e2e)', () => {
         .get('/orders')
         .expect(200)
         .expect((response) => {
-          expect(response.body).toEqual(expect.arrayContaining([order]));
+          expect(response.body).toEqual(
+            expect.arrayContaining([expect.objectContaining(order)])
+          );
         });
     });
 
@@ -61,12 +50,12 @@ describe('Orders controller (e2e)', () => {
 
   describe('GET /orders/:id', () => {
     it('returns Status Code 200 - OK and a single order', () => {
-      const orderId = 'a46d3500-993e-40e7-ab13-3b943519bd15';
+      const orderId = 'd6322630-9b0e-4262-baaa-cd30e99057a5';
       return request(app.getHttpServer())
         .get(`/orders/${orderId}`)
         .expect(200)
         .expect((response) => {
-          expect(response.body).toEqual(order);
+          expect(response.body).toEqual(expect.objectContaining(order));
         });
     });
     /**
@@ -95,7 +84,9 @@ describe('Orders controller (e2e)', () => {
         .get('/orders/')
         .expect(200)
         .expect((response) => {
-          expect(response.body).toEqual(expect.arrayContaining([order]));
+          expect(response.body).toEqual(
+            expect.arrayContaining([expect.objectContaining(order)])
+          );
         });
     });
   });
