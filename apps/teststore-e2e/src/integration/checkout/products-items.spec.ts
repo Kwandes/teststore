@@ -1,6 +1,6 @@
 import { products } from '../../fixtures/products.constant';
 
-describe('Checkout page E2E UI Tests', () => {
+describe('Products page E2E UI Tests', () => {
   beforeEach(() => {
     // Clear session storage of the actual test instance
     cy.window().then((window) => {
