@@ -135,7 +135,12 @@ export class CheckoutComponent implements OnInit {
    * @returns whether the form data is valid and modified.
    */
   purchaseIsEnabled(): boolean {
-    return this.orderForm.valid && this.orderForm.dirty;
+    return (
+      this.orderForm.valid &&
+      this.orderForm.dirty &&
+      this.productsList &&
+      this.productsList.length > 0
+    );
   }
 
   /**
