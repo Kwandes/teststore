@@ -101,7 +101,14 @@ describe('Products Page E2E UI Tests', () => {
       .eq(13) // corresponds to products[14] aka the most expensive item
       .click()
       .then(() => {
+        // Assert that the alert was shown
         cy.get('@alert').should('have.been.calledOnce');
+
+        // Check that no extra items were added to the basket
+        const itemsInSessionStorage = JSON.parse(
+          window.sessionStorage.getItem('basket') || '[]'
+        );
+        expect(itemsInSessionStorage.length).equal(666);
       });
   });
 });
