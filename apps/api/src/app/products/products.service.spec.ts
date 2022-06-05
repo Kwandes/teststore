@@ -5,10 +5,13 @@ import { firstValueFrom } from 'rxjs';
 import { products } from './products.constant';
 import { ProductsService as Service } from './products.service';
 
+// set the timeout to cover request that take longer to perform
+jest.setTimeout(30000);
+
 // Declare the mock of the HttpModule dependency, axios
 jest.mock('axios');
 
-describe('Persons Service', () => {
+describe('Products Service', () => {
   // Reference variables used for spying
   let service: Service;
   let httpService: HttpService;
