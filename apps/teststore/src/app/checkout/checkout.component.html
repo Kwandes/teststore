@@ -82,7 +82,9 @@
         <button
           id="apply-discount-btn"
           (click)="applyDiscount()"
-          [disabled]="orderStatus !== 'wip'"
+          [disabled]="
+            orderStatus !== 'wip' || !orderForm.get('discount')?.valid
+          "
           data-cy="checkout-discount-apply-btn"
         >
           Apply

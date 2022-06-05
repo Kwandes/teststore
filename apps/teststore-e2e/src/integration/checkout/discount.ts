@@ -37,41 +37,35 @@ describe('Checkout page E2E UI Tests', () => {
       );
     });
 
+    it('should disable the apply button when the discount contains invalid characters', () => {
+      // Validate input field colors for invalid text
+      cy.get('[data-cy=checkout-discount-input]')
+        .should('have.css', 'background-color', 'rgb(255, 255, 255)')
+        .type('ExampleDiscount#')
+        .should('have.css', 'background-color', 'rgb(255, 204, 203)')
+        .clear()
+        .type('ExampleDiscount!')
+        .should('have.css', 'background-color', 'rgb(255, 204, 203)')
+        .clear()
+        .type('ExampleDiscount*')
+        .should('have.css', 'background-color', 'rgb(255, 204, 203)')
+        .clear();
+      // Validate the text of the alert.
+      // Does not validate that the alert appears
+      cy.on('window:alert', (text) => {
+        expect(text).to.contains('Discount Invalid');
+      });
+      // Try to apply an invalid discount
+      cy.get('[data-cy=checkout-discount-input]').type('ExampleDiscount*');
+      cy.get('[data-cy=checkout-discount-apply-btn]').should('be.disabled');
+    });
+
     describe('should display an alert to the user and clear any discount information when', () => {
       beforeEach(() => {
         // Create a reference to the alert
         cy.window().then((window) => {
           cy.spy(window, 'alert').as('alert');
         });
-      });
-
-      it('the discount contains invalid characters', () => {
-        // Validate input field colors for invalid text
-        cy.get('[data-cy=checkout-discount-input]')
-          .should('have.css', 'background-color', 'rgb(255, 255, 255)')
-          .type('ExampleDiscount#')
-          .should('have.css', 'background-color', 'rgb(255, 204, 203)')
-          .clear()
-          .type('ExampleDiscount!')
-          .should('have.css', 'background-color', 'rgb(255, 204, 203)')
-          .clear()
-          .type('ExampleDiscount*')
-          .should('have.css', 'background-color', 'rgb(255, 204, 203)')
-          .clear();
-        // Validate the text of the alert.
-        // Does not validate that the alert appears
-        cy.on('window:alert', (text) => {
-          expect(text).to.contains('Discount Invalid');
-        });
-        // Try to apply an invalid discount
-        cy.get('[data-cy=checkout-discount-input]').type('ExampleDiscount*');
-        cy.get('[data-cy=checkout-discount-apply-btn]')
-          .click()
-          .then(() => {
-            // TODO - figure out if the alert should show or if the button should be disabled
-            // Assert that the alert was shown
-            cy.get('@alert').should('have.been.called');
-          });
       });
 
       it(`the discount has no remaning uses`, () => {
