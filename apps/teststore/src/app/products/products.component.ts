@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from '@interfaces';
+import { PriceCalculationService } from '../shared/services/price-calculation.service';
 import { ProductsService } from '../shared/services/products.service';
 
 @Component({
@@ -10,7 +11,10 @@ import { ProductsService } from '../shared/services/products.service';
 export class ProductsComponent implements OnInit {
   productsList: IProduct[] = [];
 
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private priceCalculationService: PriceCalculationService
+  ) {}
 
   ngOnInit(): void {
     this.productsService.getAll().subscribe({
@@ -34,6 +38,12 @@ export class ProductsComponent implements OnInit {
       productsInBasket = JSON.parse(sessionStorageItems);
     }
     productsInBasket.push(product);
-    sessionStorage.setItem('basket', JSON.stringify(productsInBasket));
+    if (
+      this.priceCalculationService.calculateSubtotal(productsInBasket) > 666666
+    ) {
+      alert('You have exceeded the maximum purchase amount');
+    } else {
+      sessionStorage.setItem('basket', JSON.stringify(productsInBasket));
+    }
   }
 }
