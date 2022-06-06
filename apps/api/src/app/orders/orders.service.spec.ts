@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { OrdersService as Service } from './orders.service';
-import { EntityNotFoundError, Repository } from 'typeorm';
+import { EntityNotFoundError } from 'typeorm';
 import { CreateOrderRequest, DeliveryTypeEnum } from '@interfaces';
 import { configService } from '../config/config.service';
 import { Discount, Order } from '@models';
-import { orders } from '../../../../seeder/src/constants/orders.constant';
+import { orders } from './orders.constants';
 jest.setTimeout(30000);
 
 describe('Orders Service', () => {
