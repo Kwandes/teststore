@@ -27,17 +27,15 @@ describe('Checkout page E2E UI Tests', () => {
         .should('have.css', 'background-color', 'rgb(255, 255, 255)');
     });
 
-    it('should have white background when using a valid email that is between 3 and 74 characters', () => {
+    it('should have white background when using a valid email that is between 3 and 254 characters', () => {
       cy.get('[data-cy=checkout-email-input')
         .type('e@e')
-        .should('have.css', 'background-color', 'rgb(255, 255, 255)');
-      /*
+        .should('have.css', 'background-color', 'rgb(255, 255, 255)')
         .clear()
         .type(
-          'this-fun-email-has-exactly-seventy-four-character@emailwithseventyfour.com' //254 doesn't work in the input field somehow
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa@bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc.ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd'
         )
         .should('have.css', 'background-color', 'rgb(255, 255, 255)');
-        */
     });
 
     it('should have red background when using an invalid email', () => {
@@ -54,17 +52,11 @@ describe('Checkout page E2E UI Tests', () => {
         .clear();
     });
 
-    it('should have red background when using an invalid email with a length below 3 or above 74', () => {
+    it('should have red background when using an invalid email with a length below 3', () => {
+      //Testing 255 characters is impossible since the element does not allow that many characters.
       cy.get('[data-cy=checkout-email-input')
         .type('@e')
         .should('have.css', 'background-color', 'rgb(255, 204, 203)');
-      /*
-        .clear()
-        .type(
-          'this-sad-email-has-exactly-seventy-five-characters@emailwithseventyfive.com' 
-        )
-        .should('have.css', 'background-color', 'rgb(255, 204, 203)');
-        */
     });
   });
 });
