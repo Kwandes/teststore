@@ -69,6 +69,10 @@ describe('Orders Controller', () => {
     service = app.get<Service>(Service);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
@@ -124,7 +128,7 @@ describe('Orders Controller', () => {
       jest.spyOn(service, 'create');
 
       await controller.create(null);
-      expect(service.create).toHaveBeenCalledTimes(2); //2 because we already called it once in the test above;
+      expect(service.create).toHaveBeenCalledTimes(1);
       expect(service.create).toHaveBeenCalledWith(null);
     });
 
