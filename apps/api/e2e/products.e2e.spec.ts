@@ -1,10 +1,11 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { configService } from '../src/app/config/config.service';
 import { products } from '../src/app/products/products.constant';
+import { EntityNotFoundExceptionFilter } from '../src/app/shared/filters/entity-not-found-exception.filter';
 
 // set the timeout to cover request that take longer to perform
 jest.setTimeout(30000);
@@ -24,6 +25,21 @@ describe('ProductsController (e2e)', () => {
 
     // Start the Nestjs app instance to perform requests on
     app = moduleFixture.createNestApplication();
+    app.useGlobalFilters(new EntityNotFoundExceptionFilter());
+    // ensure that the requests contain valid data
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        // Strip data of properties without decorators
+        whitelist: true,
+
+        // Throw an error if non-whitelisted values are provided
+        forbidNonWhitelisted: true,
+
+        // Throw an error if unknown values are provided
+        forbidUnknownValues: true,
+      })
+    );
     await app.init();
   });
 
