@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-node",
+            "request": "launch",
+            "name": "Debug api",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "runtimeArgs": ["-r","ts-node/register","-r","tsconfig-paths/register"],
+            "console": "integratedTerminal",
+            "program": "${workspaceFolder}\\apps\\api\\src\\app\\discounts\\discount.controller.spec.ts",
+            "outFiles": [
+                "${workspaceFolder}/**/*.js"
+            ]
+        }
+    ]
+}
