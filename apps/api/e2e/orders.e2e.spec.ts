@@ -1,9 +1,10 @@
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as request from 'supertest';
 import { AppModule } from '../src/app/app.module';
 import { configService } from '../src/app/config/config.service';
+import { EntityNotFoundExceptionFilter } from '../src/app/shared/filters/entity-not-found-exception.filter';
 
 const order = {
   orderId: 'd6322630-9b0e-4262-baaa-cd30e99057a5',
@@ -29,6 +30,22 @@ describe('Orders controller (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalFilters(new EntityNotFoundExceptionFilter());
+    // ensure that the requests contain valid data
+    app.useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        // Strip data of properties without decorators
+        whitelist: true,
+
+        // Throw an error if non-whitelisted values are provided
+        forbidNonWhitelisted: true,
+
+        // Throw an error if unknown values are provided
+        forbidUnknownValues: true,
+      })
+    );
+
     await app.init();
   });
 
@@ -59,16 +76,15 @@ describe('Orders controller (e2e)', () => {
         });
     });
 
-    /*
     it('returns Status Code 404 - Not Found when id references a non-existent order', () => {
       const orderId = 'a46d1100-993e-40e7-ab13-3b943519bd15'; //Non existent uuid
       return request(app.getHttpServer())
         .get(`/orders/${orderId}`)
         .expect(404)
         .expect((response) => {
-          expect(response.body?.error).toEqual(`Not Found`);
+          expect(response.body?.message.error).toEqual(`Not Found`);
         });
-    });*/
+    });
 
     it('returns Status Code 400 - Bad Request when id is not an UUID', () => {
       const orderId = 'invalidId';
@@ -94,11 +110,9 @@ describe('Orders controller (e2e)', () => {
   });
 
   describe('POST /orders', () => {
-    /*
     it('returns Status code 400 - Bad request when request body is empty', () => {
       return request(app.getHttpServer()).post('/orders').send({}).expect(400);
     });
-    */
 
     it('returns Status Code 201 - Created and a single order created order object', () => {
       const orderToCreate = {
@@ -125,7 +139,7 @@ describe('Orders controller (e2e)', () => {
         });
     });
 
-    /*it('returns Status Code 404 - Not Found when creating an order with non-existent discount', () => {
+    it('returns Status Code 404 - Not Found when creating an order with non-existent discount', () => {
       const orderWithBadId = {
         email: 'example@example.com',
         items: [1, 2, 3],
@@ -139,9 +153,9 @@ describe('Orders controller (e2e)', () => {
         .send(orderWithBadId)
         .expect(404)
         .expect((response) => {
-          expect(response.body?.error).toEqual('Not found');
+          expect(response.body?.message.error).toEqual('Not Found');
         });
-    });*/
+    });
   });
   afterAll(() => app.close());
 });
