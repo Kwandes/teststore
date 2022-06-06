@@ -58,8 +58,9 @@ describe('Orders controller (e2e)', () => {
           expect(response.body).toEqual(expect.objectContaining(order));
         });
     });
-    /**
-    it.('returns Status Code 404 - Not Found when id references a non-existent order', () => {
+
+    /*
+    it('returns Status Code 404 - Not Found when id references a non-existent order', () => {
       const orderId = 'a46d1100-993e-40e7-ab13-3b943519bd15'; //Non existent uuid
       return request(app.getHttpServer())
         .get(`/orders/${orderId}`)
@@ -68,6 +69,7 @@ describe('Orders controller (e2e)', () => {
           expect(response.body?.error).toEqual(`Not Found`);
         });
     });*/
+
     it('returns Status Code 400 - Bad Request when id is not an UUID', () => {
       const orderId = 'invalidId';
       return request(app.getHttpServer())
