@@ -3,6 +3,7 @@ import {
   calculateDeliveryPriceParams,
   calculateSubtotalItems,
   calculateDiscounts,
+  calculateTotal,
 } from './price-calculation-test-data.constant';
 import { PriceCalculationService } from './price-calculation.service';
 
@@ -15,18 +16,25 @@ describe('CalculatePriceService', () => {
   });
 
   // Parametrized test of the 'calculateDeliveryPrice()' method of PriceCalculationService
-  describe.each(calculateDeliveryPriceParams)('calculateDeliveryPrice()',(params) => {
+  describe.each(calculateDeliveryPriceParams)(
+    'calculateDeliveryPrice()',
+    (params) => {
       it(`Should correctly determine given delivery type price: ${params.deliveryType} = ${params.expectedPrice}`, () => {
-        expect(service.calculateDeliveryPrice(params.deliveryType)).toEqual(params.expectedPrice);
+        expect(service.calculateDeliveryPrice(params.deliveryType)).toEqual(
+          params.expectedPrice
+        );
       });
-  });
+    }
+  );
 
   // Parametrized test of the 'calculateSubtotal()' method of PriceCalculationService
   describe.each(calculateSubtotalItems)('calculateSubtotal()', (params) => {
     let itemListText = '';
     params.items.forEach((item) => (itemListText += item.price + ', '));
     it(`Should correctly determine given items with prices: ${itemListText} equal to subtotal = ${params.expectedPrice}`, () => {
-      expect(service.calculateSubtotal(params.items)).toEqual(params.expectedPrice);
+      expect(service.calculateSubtotal(params.items)).toEqual(
+        params.expectedPrice
+      );
     });
   });
 
@@ -43,4 +51,22 @@ describe('CalculatePriceService', () => {
     });
   });
 
+  // Parametrized test of the 'calculateTotal()' method of PriceCalculationService
+  describe.each(calculateTotal)('calculateTotal()', (params) => {
+    let itemsPrice = 0;
+    params.items.forEach((item) => (itemsPrice += item.price));
+    it(`Should correctly determine total with delivery type of: ${params.deliveryType}
+      and with discount (if exists): ${params.discount?.amount}
+      on items totaling a price of ${itemsPrice}
+      and delivery price ${params.expectedReturnValue.deliveryPrice}
+      to equal to ${params.expectedReturnValue.total}`, () => {
+      expect(
+        service.calculateTotal(
+          params.items,
+          params.deliveryType,
+          params.discount
+        )
+      ).toEqual(params.expectedReturnValue);
+    });
+  });
 });
