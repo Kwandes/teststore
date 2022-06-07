@@ -102,7 +102,7 @@ describe('Checkout page E2E UI Tests', () => {
       cy.get('[data-cy=checkout-discount-apply-btn]').click();
       cy.get('[data-cy=checkout-order-price-you-save]').should(
         'contain',
-        `You save: 0.00 DKK`
+        `You save: 10.00 DKK`
       );
       cy.get('[data-cy="checkout-order-price-total"]').contains(
         'Total: 50.00 DKK'
