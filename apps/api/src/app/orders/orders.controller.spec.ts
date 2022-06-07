@@ -53,7 +53,7 @@ describe('Orders Controller', () => {
     app = await Test.createTestingModule({
       controllers: [Controller],
       providers: [
-        // Mock of the service and its methods
+        // Mock of the service and its functions
         {
           provide: Service,
           useFactory: () => ({
