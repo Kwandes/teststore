@@ -22,7 +22,7 @@ export const calculateSubtotalItems: {
       {
         id: 0,
         title: '',
-        price: 100.1,
+        price: 200,
         description: '',
         category: '',
         image: '',
